@@ -1,4 +1,5 @@
 import streamlit as st
+from models import Owner, Pet, Task, Scheduler
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
 
@@ -43,6 +44,11 @@ owner_name = st.text_input("Owner name", value="Jordan")
 pet_name = st.text_input("Pet name", value="Mochi")
 species = st.selectbox("Species", ["dog", "cat", "other"])
 
+# Create owner and pet
+owner = Owner(owner_name)
+pet = Pet(pet_name, species)
+owner.add_pet(pet)
+
 st.markdown("### Tasks")
 st.caption("Add a few tasks. In your final version, these should feed into your scheduler.")
 
@@ -58,13 +64,16 @@ with col3:
     priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
 
 if st.button("Add task"):
-    st.session_state.tasks.append(
-        {"title": task_title, "duration_minutes": int(duration), "priority": priority}
-    )
+    task = Task(task_title, int(duration), priority, pet)
+    st.session_state.tasks.append(task)
 
 if st.session_state.tasks:
     st.write("Current tasks:")
-    st.table(st.session_state.tasks)
+    task_data = [
+        {"Title": t.title, "Duration (min)": t.duration_minutes, "Priority": t.priority, "Pet": t.pet.name if t.pet else "N/A"}
+        for t in st.session_state.tasks
+    ]
+    st.table(task_data)
 else:
     st.info("No tasks yet. Add one above.")
 
@@ -74,15 +83,24 @@ st.subheader("Build Schedule")
 st.caption("This button should call your scheduling logic once you implement it.")
 
 if st.button("Generate schedule"):
-    st.warning(
-        "Not implemented yet. Next step: create your scheduling logic (classes/functions) and call it here."
-    )
-    st.markdown(
-        """
-Suggested approach:
-1. Design your UML (draft).
-2. Create class stubs (no logic).
-3. Implement scheduling behavior.
-4. Connect your scheduler here and display results.
-"""
-    )
+    if not st.session_state.tasks:
+        st.error("No tasks to schedule.")
+    else:
+        scheduler = Scheduler()
+        for task in st.session_state.tasks:
+            scheduler.add_task(task)
+        schedule = scheduler.generate_schedule()
+        
+        if schedule:
+            st.success("Schedule generated!")
+            for item in schedule:
+                task = item['task']
+                start = item['start_time']
+                end = item['end_time']
+                start_hour = start // 60
+                start_min = start % 60
+                end_hour = end // 60
+                end_min = end % 60
+                st.write(f"{start_hour:02d}:{start_min:02d} - {end_hour:02d}:{end_min:02d}: {task.title} for {task.pet.name if task.pet else 'Unknown'}")
+        else:
+            st.warning("No schedule could be generated (tasks may not fit in the day).")
