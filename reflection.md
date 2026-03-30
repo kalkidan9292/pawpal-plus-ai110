@@ -36,6 +36,10 @@ These decisions helped balance functionality with simplicity.
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+My scheduler considers time and priority as the main constraints. Tasks are ordered based on priority level (High, Medium, Low) and then sorted by time.
+
+I decided these constraints mattered most because pet care tasks often vary in urgency, and some tasks must be completed earlier in the day. Combining priority with time ensures that important tasks are handled first while still maintaining a logical schedule.
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
@@ -50,12 +54,20 @@ One tradeoff in my scheduler is that conflict detection only checks for tasks wi
 - How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
 - What kinds of prompts or questions were most helpful?
 
+I used AI tools like GitHub Copilot throughout the project for brainstorming system design, generating class structures, and implementing methods such as sorting, filtering, and conflict detection.
+
+The most helpful prompts were specific questions about how to structure relationships between classes and how to implement sorting using datetime. AI also helped speed up debugging by suggesting fixes for errors and improving code readability.
+
 **b. Judgment and verification**
 
 - Describe one moment where you did not accept an AI suggestion as-is.
 - How did you evaluate or verify what the AI suggested?
 
 ---
+
+One moment where I did not accept an AI suggestion as-is was when it recommended adding advanced features like task IDs and complex filtering logic. I chose to simplify the design because those features added unnecessary complexity for this project.
+
+I evaluated the suggestions by considering whether they improved clarity and usability. If the solution made the system harder to understand or maintain, I modified or rejected it.
 
 ## 4. Testing and Verification
 
@@ -64,6 +76,10 @@ One tradeoff in my scheduler is that conflict detection only checks for tasks wi
 - What behaviors did you test?
 - Why were these tests important?
 
+I tested task completion, adding tasks to pets, sorting tasks by time, conflict detection, and recurring task behavior.
+
+These tests were important to ensure that the core functionality of the system worked correctly and that tasks were being managed and displayed as expected.
+
 **b. Confidence**
 
 - How confident are you that your scheduler works correctly?
@@ -71,15 +87,23 @@ One tradeoff in my scheduler is that conflict detection only checks for tasks wi
 
 ---
 
+I am very confident that my scheduler works correctly for the main use cases, including sorting, filtering, and conflict detection.
+
+If I had more time, I would test additional edge cases such as invalid time formats, overlapping task durations, and handling a larger number of tasks across multiple pets.
+
 ## 5. Reflection
 
 **a. What went well**
 
 - What part of this project are you most satisfied with?
 
+I am most satisfied with how the system integrates the backend logic with the Streamlit UI. The app is interactive and clearly demonstrates the scheduling features.
+
 **b. What you would improve**
 
 - If you had another iteration, what would you improve or redesign?
+
+If I had another iteration, I would improve the system by adding more advanced scheduling features such as overlapping time detection, better recurring task handling, and data persistence.
 
 **c. Key takeaway**
 
