@@ -49,3 +49,19 @@ This system includes:
 - Filtering tasks by completion status and pet
 - Basic conflict detection for tasks scheduled at the same time
 - Simple recurring task handling for daily and weekly tasks
+
+## Testing PawPal+
+
+Run tests using:
+```bash
+python -m pytest
+```
+
+Tests cover:
+- Task completion
+- Adding tasks to pets
+- Sorting tasks by time
+- Conflict detection
+- Recurring task behavior
+
+Confidence Level: ⭐⭐⭐⭐☆ (4/5)
