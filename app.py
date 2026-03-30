@@ -103,7 +103,13 @@ if st.session_state.owner.pets:
                 if task in pet.tasks:
                     pet_name = pet.name
                     break
-            st.write(f"{task.time} - {task.description} ({pet_name})")
+            st.success(f"{task.time} - {task.description} ({pet_name})")
+
+        conflicts = scheduler.detect_conflicts(sorted_tasks)
+        if conflicts:
+            st.warning("⚠️ Scheduling Conflict Detected!")
+            for c in conflicts:
+                st.write(c)
     else:
         st.info("No tasks scheduled yet.")
 else:

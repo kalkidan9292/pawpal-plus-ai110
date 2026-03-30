@@ -50,6 +50,18 @@ This system includes:
 - Basic conflict detection for tasks scheduled at the same time
 - Simple recurring task handling for daily and weekly tasks
 
+## Features
+
+- Add pets and tasks through a Streamlit UI
+- Tasks are sorted by time using datetime parsing
+- Filter tasks by completion status
+- Detect scheduling conflicts when tasks share the same time
+- Basic recurring task support
+
+## 📸 Demo
+
+(Add your screenshot here)
+
 ## Testing PawPal+
 
 Run tests using:
@@ -59,9 +71,8 @@ python -m pytest
 
 Tests cover:
 - Task completion
-- Adding tasks to pets
-- Sorting tasks by time
+- Adding tasks
+- Sorting
 - Conflict detection
-- Recurring task behavior
 
 Confidence Level: ⭐⭐⭐⭐☆ (4/5)

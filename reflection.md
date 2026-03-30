@@ -84,3 +84,13 @@ One tradeoff in my scheduler is that conflict detection only checks for tasks wi
 **c. Key takeaway**
 
 - What is one important thing you learned about designing systems or working with AI on this project?
+
+AI tools like GitHub Copilot were very helpful during this project. I used Copilot to generate class structures, suggest methods, and help implement sorting and filtering logic.
+
+The most effective feature was inline suggestions and chat assistance, which helped me quickly build and debug my scheduler logic.
+
+One suggestion I modified was adding too much complexity, such as advanced filtering and task IDs. I chose to keep the system simple and readable instead.
+
+Using separate chat sessions helped me stay organized by focusing on one phase at a time without mixing design, implementation, and testing.
+
+I learned that even with powerful AI tools, I still needed to guide the design decisions and keep the system simple. Acting as the “lead architect” meant choosing clarity and functionality over unnecessary complexity.
