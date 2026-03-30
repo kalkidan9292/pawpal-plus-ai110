@@ -103,7 +103,14 @@ if st.session_state.owner.pets:
                 if task in pet.tasks:
                     pet_name = pet.name
                     break
-            st.success(f"{task.time} - {task.description} ({pet_name})")
+
+            emoji = "🟢"
+            if task.priority == "High":
+                emoji = "🔴"
+            elif task.priority == "Medium":
+                emoji = "🟡"
+
+            st.write(f"{emoji} {task.time} - {task.description} ({pet_name}) - {task.priority}")
 
         conflicts = scheduler.detect_conflicts(sorted_tasks)
         if conflicts:

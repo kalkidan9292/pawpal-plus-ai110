@@ -8,6 +8,7 @@ class Task:
     description: str
     time: str
     frequency: str
+    priority: str = "Medium"
     completed: bool = False
 
     def mark_complete(self) -> Optional['Task']:
@@ -64,6 +65,17 @@ class Scheduler:
     def sort_by_time(self, tasks: List[Task]) -> List[Task]:
         """Sort tasks by their scheduled time."""
         return sorted(tasks, key=lambda task: datetime.strptime(task.time, "%H:%M"))
+
+    def sort_by_priority_and_time(self, tasks: List[Task]) -> List[Task]:
+        """Sort tasks by priority (High>Medium>Low) then time."""
+        priority_order = {"High": 1, "Medium": 2, "Low": 3}
+        return sorted(
+            tasks,
+            key=lambda task: (
+                priority_order.get(task.priority, 2),
+                datetime.strptime(task.time, "%H:%M")
+            )
+        )
 
     def filter_tasks(self, tasks: List[Task], completed: Optional[bool] = None) -> List[Task]:
         """Filter tasks by completion status."""

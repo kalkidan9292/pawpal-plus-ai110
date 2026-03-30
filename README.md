@@ -54,9 +54,17 @@ This system includes:
 
 - Add pets and tasks through a Streamlit UI
 - Tasks are sorted by time using datetime parsing
+- Priority scheduling: High, Medium, Low
 - Filter tasks by completion status
 - Detect scheduling conflicts when tasks share the same time
 - Basic recurring task support
+
+## Advanced Feature: Priority Scheduling
+
+Tasks are prioritized using a weighted system (High, Medium, Low).
+The scheduler sorts tasks by priority first, then by time.
+
+Agent Mode was used to help design the sorting logic and ensure a clean, readable implementation.
 
 ## 📸 Demo
 

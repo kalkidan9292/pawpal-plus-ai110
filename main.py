@@ -12,9 +12,9 @@ owner.add_pet(dog)
 owner.add_pet(cat)
 
 # Create tasks
-task1 = Task("Feed Buddy", "08:00", "Daily")
-task2 = Task("Walk Buddy", "10:00", "Daily")
-task3 = Task("Feed Luna", "09:00", "Daily")
+task1 = Task("Feed Buddy", "08:00", "Daily", "High")
+task2 = Task("Walk Buddy", "10:00", "Daily", "Medium")
+task3 = Task("Feed Luna", "09:00", "Daily", "Low")
 task4 = Task("Bath Buddy", "08:00", "Daily")  # Duplicate time for conflict test
 
 # Add tasks to pets
@@ -30,7 +30,7 @@ scheduler = Scheduler(owner)
 tasks = scheduler.get_all_tasks()
 
 # Sort tasks
-sorted_tasks = scheduler.sort_by_time(tasks)
+sorted_tasks = scheduler.sort_by_priority_and_time(tasks)
 
 # Print schedule
 print("Today's Schedule:\n")
