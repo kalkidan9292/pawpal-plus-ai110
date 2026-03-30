@@ -68,8 +68,7 @@ Agent Mode was used to help design the sorting logic and ensure a clean, readabl
 
 ## 📸 Demo
 
-(Add your screenshot here)
-
+![PawPal App](demo2.png)
 ## Testing PawPal+
 
 Run tests using:
