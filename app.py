@@ -1,7 +1,11 @@
 import streamlit as st
-from models import Owner, Pet, Task, Scheduler
+from pawpal_system import Task, Pet, Owner, Scheduler
 
 st.set_page_config(page_title="PawPal+", page_icon="🐾", layout="centered")
+
+# STEP 2: Fix the "memory reset" problem
+if "owner" not in st.session_state:
+    st.session_state.owner = Owner("Kali")
 
 st.title("🐾 PawPal+")
 
@@ -39,68 +43,68 @@ At minimum, your system should:
 
 st.divider()
 
-st.subheader("Quick Demo Inputs (UI only)")
-owner_name = st.text_input("Owner name", value="Jordan")
-pet_name = st.text_input("Pet name", value="Mochi")
-species = st.selectbox("Species", ["dog", "cat", "other"])
+# STEP 3: Add a Pet (connect UI → your code)
+st.header("Add a Pet")
 
-# Create owner and pet
-owner = Owner(owner_name)
-pet = Pet(pet_name, species)
-owner.add_pet(pet)
+pet_name = st.text_input("Pet Name", key="pet_name")
+pet_type = st.text_input("Pet Type", key="pet_type")
 
-st.markdown("### Tasks")
-st.caption("Add a few tasks. In your final version, these should feed into your scheduler.")
+if st.button("Add Pet") and pet_name and pet_type:
+    new_pet = Pet(pet_name, pet_type)
+    st.session_state.owner.add_pet(new_pet)
+    st.success(f"{pet_name} added!")
+    # Clear inputs
+    st.session_state.pet_name = ""
+    st.session_state.pet_type = ""
+    st.rerun()
 
-if "tasks" not in st.session_state:
-    st.session_state.tasks = []
+# STEP 4: Add a Task (this is the real connection)
+st.header("Add a Task")
 
-col1, col2, col3 = st.columns(3)
-with col1:
-    task_title = st.text_input("Task title", value="Morning walk")
-with col2:
-    duration = st.number_input("Duration (minutes)", min_value=1, max_value=240, value=20)
-with col3:
-    priority = st.selectbox("Priority", ["low", "medium", "high"], index=2)
+task_desc = st.text_input("Task Description", key="task_desc")
+task_time = st.text_input("Time (HH:MM)", key="task_time")
+task_freq = st.text_input("Frequency", key="task_freq")
 
-if st.button("Add task"):
-    task = Task(task_title, int(duration), priority, pet)
-    st.session_state.tasks.append(task)
+# choose pet
+pet_names = [pet.name for pet in st.session_state.owner.pets]
+if pet_names:
+    selected_pet_name = st.selectbox("Select Pet", pet_names)
 
-if st.session_state.tasks:
-    st.write("Current tasks:")
-    task_data = [
-        {"Title": t.title, "Duration (min)": t.duration_minutes, "Priority": t.priority, "Pet": t.pet.name if t.pet else "N/A"}
-        for t in st.session_state.tasks
-    ]
-    st.table(task_data)
+    if st.button("Add Task") and task_desc and task_time and task_freq:
+        task = Task(task_desc, task_time, task_freq)
+
+        # find correct pet
+        for pet in st.session_state.owner.pets:
+            if pet.name == selected_pet_name:
+                pet.add_task(task)
+
+        st.success("Task added!")
+        # Clear inputs
+        st.session_state.task_desc = ""
+        st.session_state.task_time = ""
+        st.session_state.task_freq = ""
+        st.rerun()
 else:
-    st.info("No tasks yet. Add one above.")
+    st.info("Please add a pet first before creating tasks.")
 
-st.divider()
+# STEP 5: Display Schedule (prove your logic works in UI)
+st.header("Today's Schedule")
 
-st.subheader("Build Schedule")
-st.caption("This button should call your scheduling logic once you implement it.")
+if st.session_state.owner.pets:
+    scheduler = Scheduler(st.session_state.owner)
+    tasks = scheduler.get_all_tasks()
+    sorted_tasks = scheduler.sort_by_time(tasks)
 
-if st.button("Generate schedule"):
-    if not st.session_state.tasks:
-        st.error("No tasks to schedule.")
+    if sorted_tasks:
+        for task in sorted_tasks:
+            # Find which pet owns this task
+            pet_name = "Unknown"
+            for pet in st.session_state.owner.pets:
+                if task in pet.tasks:
+                    pet_name = pet.name
+                    break
+            st.write(f"{task.time} - {task.description} ({pet_name})")
     else:
-        scheduler = Scheduler()
-        for task in st.session_state.tasks:
-            scheduler.add_task(task)
-        schedule = scheduler.generate_schedule()
-        
-        if schedule:
-            st.success("Schedule generated!")
-            for item in schedule:
-                task = item['task']
-                start = item['start_time']
-                end = item['end_time']
-                start_hour = start // 60
-                start_min = start % 60
-                end_hour = end // 60
-                end_min = end % 60
-                st.write(f"{start_hour:02d}:{start_min:02d} - {end_hour:02d}:{end_min:02d}: {task.title} for {task.pet.name if task.pet else 'Unknown'}")
-        else:
-            st.warning("No schedule could be generated (tasks may not fit in the day).")
+        st.info("No tasks scheduled yet.")
+else:
+    st.info("Add some pets and tasks to see your schedule!")

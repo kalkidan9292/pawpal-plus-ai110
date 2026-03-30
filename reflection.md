@@ -20,6 +20,15 @@ The user can generate a daily schedule that organizes tasks based on time and pr
 
 ---
 
+I reviewed my design with AI and identified a few potential improvements.
+
+One issue was that tasks were being sorted using string values for time, which could lead to incorrect ordering. I improved this by using Python’s datetime parsing to ensure tasks are sorted correctly.
+
+I also considered adding more advanced features like task IDs and additional filtering options, but decided to keep the design simple to maintain readability and focus on core functionality.
+
+These decisions helped balance functionality with simplicity.
+
+
 ## 2. Scheduling Logic and Tradeoffs
 
 **a. Constraints and priorities**
