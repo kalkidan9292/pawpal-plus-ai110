@@ -67,7 +67,7 @@ The scheduler sorts tasks by priority first, then by time.
 Agent Mode was used to help design the sorting logic and ensure a clean, readable implementation.
 
 ## 📸 Demo
-
+![PawPal App](demo1.png)
 ![PawPal App](demo2.png)
 ## Testing PawPal+
 
