@@ -41,7 +41,7 @@ These decisions helped balance functionality with simplicity.
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
 
----
+One tradeoff in my scheduler is that conflict detection only checks for tasks with the exact same time rather than overlapping durations. This simplifies the logic and keeps the system easy to understand, but it may not catch more complex scheduling conflicts.
 
 ## 3. AI Collaboration
 
