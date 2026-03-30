@@ -11,14 +11,10 @@ class Task:
     completed: bool = False
 
     def mark_complete(self) -> Optional['Task']:
-        """Mark the task as completed and return a new recurring task if applicable."""
+        """Mark the task as completed. Return a new daily recurring task if applicable."""
         self.completed = True
 
         if self.frequency.lower() == "daily":
-            # For daily tasks, keep the same time
-            return Task(self.description, self.time, self.frequency)
-        elif self.frequency.lower() == "weekly":
-            # For weekly tasks, keep the same time (simplified)
             return Task(self.description, self.time, self.frequency)
 
         return None
@@ -69,20 +65,11 @@ class Scheduler:
         """Sort tasks by their scheduled time."""
         return sorted(tasks, key=lambda task: datetime.strptime(task.time, "%H:%M"))
 
-    def filter_tasks(self, tasks: List[Task], completed: Optional[bool] = None, pet_name: Optional[str] = None) -> List[Task]:
-        """Filter tasks by completion status and/or pet name."""
-        filtered = tasks
-
-        if completed is not None:
-            filtered = [t for t in filtered if t.completed == completed]
-
-        if pet_name:
-            filtered = [
-                t for t in filtered
-                if any(t in pet.tasks and pet.name == pet_name for pet in self.owner.pets)
-            ]
-
-        return filtered
+    def filter_tasks(self, tasks: List[Task], completed: Optional[bool] = None) -> List[Task]:
+        """Filter tasks by completion status."""
+        if completed is None:
+            return tasks
+        return [t for t in tasks if t.completed == completed]
 
     def detect_conflicts(self, tasks: List[Task]) -> List[str]:
         """Detect conflicts for tasks scheduled at the same time."""
@@ -91,8 +78,8 @@ class Scheduler:
 
         for task in tasks:
             if task.time in seen_times:
-                conflicts.append(f"Conflict at {task.time}: {task.description} overlaps with {seen_times[task.time]}")
+                conflicts.append(f"Conflict at {task.time}")
             else:
-                seen_times[task.time] = task.description
+                seen_times[task.time] = task
 
         return conflicts
